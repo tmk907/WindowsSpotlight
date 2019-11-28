@@ -23,6 +23,7 @@ namespace WindowsSpotlight
             var spotlightFolder = @"C:\Users\tomek\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets";
             var wallpapersFolder = @"C:\Users\tomek\Pictures\Spotlight Wallpapers";
             var newWallpapersFolder = @"C:\Users\tomek\Pictures\Spotlight Wallpapers\New wallpapers";
+            var logFilePath = Path.Combine(wallpapersFolder, "log.txt");
 
             Directory.CreateDirectory(wallpapersFolder);
             var newWallpapersFolderInfo = Directory.CreateDirectory(newWallpapersFolder);
@@ -56,25 +57,34 @@ namespace WindowsSpotlight
 
             if (newSpotlightFiles.Count > 0)
             {
-                Directory.Delete(newWallpapersFolder, true);
-                Directory.CreateDirectory(newWallpapersFolder);
-
-                string newWallpaperPath = "";
-
-                foreach (var file in newSpotlightFiles)
+                try
                 {
-                    try
+                    foreach (var file in newWallpapersFolderInfo.GetFiles())
                     {
-                        File.Copy(file, Path.Combine(wallpapersFolder, Path.GetFileName(file) + imageExt));
+                        file.Delete();
                     }
-                    catch (IOException ex)
+
+                    string newWallpaperPath = "";
+
+                    foreach (var file in newSpotlightFiles)
                     {
-                        Console.WriteLine(ex.ToString());
+                        try
+                        {
+                            File.Copy(file, Path.Combine(wallpapersFolder, Path.GetFileName(file) + imageExt));
+                        }
+                        catch (IOException ex)
+                        {
+                            Console.WriteLine(ex.ToString());
+                        }
+                        newWallpaperPath = Path.Combine(newWallpapersFolder, Path.GetFileName(file) + imageExt);
+                        File.Copy(file, newWallpaperPath);
                     }
-                    newWallpaperPath = Path.Combine(newWallpapersFolder, Path.GetFileName(file) + imageExt);
-                    File.Copy(file, newWallpaperPath);
+
                 }
-            
+                catch (Exception ex)
+                {
+                    File.AppendAllText(logFilePath, ex.ToString());
+                }
                 //SetWallpaper(newWallpaperPath);
             }
 
