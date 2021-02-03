@@ -7,7 +7,7 @@ Images are saved to folders:
 
 ## 
 ### Download  
-https://github.com/tmk907/WindowsSpotlight/releases/download/1.1/WindowsSpotlight.exe
+https://github.com/tmk907/WindowsSpotlight/releases
 
 ##
 ### Add program to startup  
