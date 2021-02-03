@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-//using System.Runtime.InteropServices;
+using System.Linq;
+using PhotoSauce.MagicScaler;
 
 namespace WindowsSpotlight
 {
     class Program
     {
-        //[DllImport("user32.dll", CharSet = CharSet.Auto)]
-        //private static extern Int32 SystemParametersInfo(UInt32 action, UInt32 uParam, String vParam, UInt32 winIni);
-
-        //private static readonly UInt32 SPI_SETDESKWALLPAPER = 0x14;
-        //private static readonly UInt32 SPIF_UPDATEINIFILE = 0x01;
-        //private static readonly UInt32 SPIF_SENDWININICHANGE = 0x02;
-
-
         static void Main(string[] args)
         {
             var imageExt = ".jpg";
@@ -45,12 +37,11 @@ namespace WindowsSpotlight
             {
                 if (File.GetCreationTimeUtc(filePath) > createdAt)
                 {
-                    using (var image = Image.FromFile(filePath))
+                    var image = ImageFileInfo.Load(filePath);
+                    var frame = image.Frames.FirstOrDefault();
+                    if (frame.Width > frame.Height)
                     {
-                        if (image.Width > image.Height)
-                        {
-                            newSpotlightFiles.Add(filePath);
-                        }
+                        newSpotlightFiles.Add(filePath);
                     }
                 }
             }
@@ -85,23 +76,7 @@ namespace WindowsSpotlight
                 {
                     File.AppendAllText(logFilePath, ex.ToString());
                 }
-                //SetWallpaper(newWallpaperPath);
             }
-
-            //try
-            //{
-            //    var startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-
-            //}
-            //catch (Exception)
-            //{
-
-            //}
         }
-
-        //private static void SetWallpaper(String path)
-        //{
-        //    SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, path, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
-        //}
     }
 }
