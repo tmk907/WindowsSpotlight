@@ -11,10 +11,14 @@ namespace WindowsSpotlight
         static void Main(string[] args)
         {
             var imageExt = ".jpg";
-
-            var spotlightFolder = @"C:\Users\tomek\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets";
-            var wallpapersFolder = @"C:\Users\tomek\Pictures\Spotlight Wallpapers";
-            var newWallpapersFolder = @"C:\Users\tomek\Pictures\Spotlight Wallpapers\New wallpapers";
+            
+            var picturesFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            
+            var spotlightFolder = Path.Combine(appDataFolder,@"Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets");
+            var wallpapersFolder = Path.Combine(picturesFolderPath, @"Spotlight Wallpapers");
+            var newWallpapersFolder = Path.Combine(picturesFolderPath, @"Spotlight Wallpapers\New wallpapers");
+            
             var logFilePath = Path.Combine(wallpapersFolder, "log.txt");
 
             Directory.CreateDirectory(wallpapersFolder);
